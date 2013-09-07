@@ -4,7 +4,7 @@ Ban is a arduino firmware (based on firmata) that receives incoming remote contr
 
 ## The Arduino Layout
 
-![Laoyut](doc/ban-layout.svg)
+![Laoyut](https://raw.github.com/threez/ban/master/doc/ban-layout.svg)
 
 ## Websocket Protocol
 
