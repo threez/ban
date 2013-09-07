@@ -1,0 +1,10 @@
+#!/usr/bin/env ruby
+
+begin
+  require 'ban'
+rescue LoadError
+  $LOAD_PATH.unshift File.expand_path('../../lib', __FILE__)
+  require 'ban'
+end
+
+Ban::CLI.start
