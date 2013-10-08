@@ -3,10 +3,10 @@ module Ban
     option :device, default: nil
     option :port, type: :numeric, default: 8080
     option :interface, type: :string, default: '0.0.0.0'
-    option :user, type: :string, default: 'dialout'
-    option :group, type: :string, default: 'nobody'
+    option :user, type: :string, default: 'nobody'
+    option :group, type: :string, default: 'dialout'
     option :chroot, type: :string, default: Dir.getwd
-    option :em_threads, type: :numeric, default: 4
+    option :em_threads, type: :numeric, default: 2
     desc "server", "starts the ban server"
     def server
       device = options[:device]

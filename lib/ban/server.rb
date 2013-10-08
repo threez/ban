@@ -1,7 +1,7 @@
 module Ban
   class Server
     include EventEmitter
-    
+
     def initialize(user, group, chroot)
       @clients = []
       @user, @group, @chroot = user, group, chroot
@@ -15,7 +15,6 @@ module Ban
 
     def start(interface, port)
       @server = EM::WebSocket.run(host: interface, port: port) do |ws|
-        drop_priviledges!
         ws.onopen do |handshake|
           Ban::Logger.debug "WebSocket connection open"
           @clients << ws
@@ -35,16 +34,20 @@ module Ban
           end
         end
       end
+
+      # server port has been started
+      drop_priviledges!
     end
-    
+
     def drop_priviledges!
-      gid = Etc.getgrnam(@user).gid
-      uid = Etc.getpwnam(@group).uid
+      Ban::Logger.info "Switching to #{@user}:#{@group} into #{@chroot}"
+      uid = Etc.getpwnam(@user).uid
+      gid = Etc.getgrnam(@group).gid
       Dir.chroot(@chroot)
       Process::Sys.setgid(gid)
       Process::Sys.setuid(uid)
     rescue => ex
-      Ban::Logger.warn "Dropping the proviledges didn't work: #{ex}"
+      Ban::Logger.warn "Dropping the priviledges didn't work: #{ex}"
     end
   end
 end
