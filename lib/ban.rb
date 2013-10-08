@@ -1,6 +1,7 @@
 require 'ban/version'
 require 'logger'
 require 'json'
+require 'etc'
 
 # used gems
 require 'eventmachine'

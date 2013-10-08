@@ -3,6 +3,10 @@ module Ban
     option :device, default: nil
     option :port, type: :numeric, default: 8080
     option :interface, type: :string, default: '0.0.0.0'
+    option :user, type: :string, default: 'dialout'
+    option :group, type: :string, default: 'nobody'
+    option :chroot, type: :string, default: Dir.getwd
+    option :em_threads, type: :numeric, default: 4
     desc "server", "starts the ban server"
     def server
       device = options[:device]
@@ -10,9 +14,10 @@ module Ban
       port = options[:port]
 
       EM.epoll
+      EM.threadpool_size = options[:em_threads]
       EM.run do
         board = Board.new
-        server = Server.new
+        server = Server.new(options[:user], options[:group], options[:chroot])
 
         board.on :event do |event|
           if event.valid?
