@@ -43,6 +43,7 @@ module Ban
       Ban::Logger.info "Switching to #{@user}:#{@group} into #{@chroot}"
       uid = Etc.getpwnam(@user).uid
       gid = Etc.getgrnam(@group).gid
+      Dir.chdir(@chroot)
       Dir.chroot(@chroot)
       Process::Sys.setgid(gid)
       Process::Sys.setuid(uid)

@@ -4,20 +4,21 @@ module Ban
     option :port, type: :numeric, default: 8080
     option :interface, type: :string, default: '0.0.0.0'
     option :user, type: :string, default: 'nobody'
-    option :group, type: :string, default: 'dialout'
-    option :chroot, type: :string, default: Dir.getwd
+    option :group, type: :string, default: 'nogroup'
+    option :chroot, type: :string, default: nil
     option :em_threads, type: :numeric, default: 2
     desc "server", "starts the ban server"
     def server
       device = options[:device]
       interface = options[:interface]
       port = options[:port]
+      chroot = options[:chroot] || Dir.mktmpdir
 
       EM.epoll
       EM.threadpool_size = options[:em_threads]
       EM.run do
         board = Board.new
-        server = Server.new(options[:user], options[:group], options[:chroot])
+        server = Server.new(options[:user], options[:group], chroot)
 
         board.on :event do |event|
           if event.valid?

@@ -2,6 +2,7 @@ require 'ban/version'
 require 'logger'
 require 'json'
 require 'etc'
+require 'tmpdir'
 
 # used gems
 require 'eventmachine'
